@@ -18,7 +18,6 @@ function App() {
   const handleEatSushi = (id, price) => {
     if (money >= price) {
       setEatenSushis([...eatenSushis, id])
-      console.log(eatenSushis)
       setMoney(money => money - price)
     } else {
       alert("You can't afford that sushi!")

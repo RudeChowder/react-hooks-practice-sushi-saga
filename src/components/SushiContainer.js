@@ -4,6 +4,7 @@ import Sushi from "./Sushi"
 
 function SushiContainer({ sushis, eatenSushis, onEatSushi }) {
   const [conveyorPosition, setConveyorPosition] = useState(0)
+  const nextConveyorPosition = conveyorPosition + 4
 
   const sushiComponents = sushis.map(sushi => {
     return (
@@ -19,18 +20,25 @@ function SushiContainer({ sushis, eatenSushis, onEatSushi }) {
     )
   })
 
-  console.log(sushis)
-
   const sushiToDisplay = () => {
-    if ((conveyorPosition + 4) > 100) {
-      
+    let newSushisToDisplay = []
+    if ((nextConveyorPosition) > 100) {
+      const remainder = 100 - conveyorPosition
+      newSushisToDisplay = sushiComponents.slice(-remainder)
+      newSushisToDisplay = newSushisToDisplay.concat(sushiComponents.slice(0, (4 - remainder)))
     } else {
-      return sushiComponents.slice(conveyorPosition, conveyorPosition + 4)
+      newSushisToDisplay =  sushiComponents.slice(conveyorPosition, nextConveyorPosition)
     }
+    console.log(newSushisToDisplay.map(sushi => sushi.key))
+    return newSushisToDisplay
   }
 
   const handleMoreSushi = () => {
-    setConveyorPosition(conveyorPosition => conveyorPosition + 4)
+    if(nextConveyorPosition >= 100){
+      setConveyorPosition(nextConveyorPosition - 100)
+    } else {
+      setConveyorPosition(nextConveyorPosition)
+    }
   }
 
   return (
